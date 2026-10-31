@@ -1,0 +1,14 @@
+node_modules/
+.next/
+out/
+dist/
+coverage/
+test-results/
+playwright-report/
+package-lock.json
+next-env.d.ts
+src/components/iso/
+src/components/garage/*.ts
+src/components/garage/*.tsx
+src/components/garage/*.css
+!src/components/garage/*.test.ts

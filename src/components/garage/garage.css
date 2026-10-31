@@ -1,0 +1,321 @@
+.gr {
+  border-radius: 10px;
+  cursor: pointer;
+  touch-action: pan-y;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.gr:focus-visible {
+  outline: 1px solid var(--anatomy-muted);
+  outline-offset: 6px;
+}
+
+.gr .iso-svg {
+  overflow: visible;
+}
+
+
+.gr-dot {
+  fill: var(--anatomy-dot);
+}
+
+
+.gr-c-floor {
+  --anatomy-paper: #dcdcd8;
+  --anatomy-top: #e2e2de;
+  --anatomy-shade-0: #b9b9b4;
+  --anatomy-shade-1: #c3c3be;
+  --anatomy-shade-2: #cbcbc6;
+  --anatomy-shade-3: #d3d3ce;
+  --anatomy-hi: #4b4b48;
+  --anatomy-mid: #8d8d88;
+  --anatomy-lo: #a9a9a3;
+  --anatomy-faint: #c6c6c0;
+}
+
+.gr-recess {
+  --anatomy-paper: #4d5058;
+  --anatomy-top: #575a63;
+  --anatomy-shade-0: #34363c;
+  --anatomy-shade-1: #3b3d44;
+  --anatomy-shade-2: #42454c;
+  --anatomy-shade-3: #494c54;
+  --anatomy-lo: #2a2c31;
+  --anatomy-faint: #2a2c31;
+}
+
+.gr-c-building {
+  --anatomy-paper: #ead9bf;
+  --anatomy-top: #f3e6d1;
+  --anatomy-shade-0: #c4a47d;
+  --anatomy-shade-1: #cfb18c;
+  --anatomy-shade-2: #d9bf9d;
+  --anatomy-shade-3: #e2ccad;
+  --anatomy-hi: #5a4630;
+  --anatomy-mid: #957552;
+  --anatomy-lo: #b79a76;
+  --anatomy-faint: #ccb08c;
+}
+
+.gr-c-pit {
+  --anatomy-paper: #8e939b;
+  --anatomy-top: #8e939b;
+  --anatomy-faint: #a9adb3;
+}
+
+.gr-c-deck {
+  --anatomy-paper: #c9d4df;
+  --anatomy-top: #d6e0ea;
+  --anatomy-shade-0: #8fa2b6;
+  --anatomy-shade-1: #9cadc0;
+  --anatomy-shade-2: #aab9ca;
+  --anatomy-shade-3: #b8c6d4;
+  --anatomy-hi: #2f3d4c;
+  --anatomy-mid: #6c8197;
+  --anatomy-lo: #8a9db1;
+  --anatomy-faint: #a6b6c7;
+}
+
+.gr-c-rail {
+  --anatomy-paper: #aeb6c0;
+  --anatomy-top: #c4cbd3;
+  --anatomy-shade-0: #77818e;
+  --anatomy-shade-1: #848e9a;
+  --anatomy-shade-2: #929ba6;
+  --anatomy-shade-3: #a0a8b2;
+  --anatomy-hi: #2b3138;
+  --anatomy-mid: #5f6874;
+  --anatomy-lo: #6f7884;
+  --anatomy-faint: #8d96a1;
+  --anatomy-dot: #3b424b;
+}
+
+.gr .iso-line.gr-paint {
+  stroke: #e0a400;
+  stroke-width: 1.2px;
+}
+
+.gr-c-yellow {
+  --anatomy-paper: #f6c026;
+  --anatomy-top: #ffd54a;
+  --anatomy-shade-0: #c99400;
+  --anatomy-shade-1: #d8a300;
+  --anatomy-shade-2: #e5b10a;
+  --anatomy-shade-3: #efbd1c;
+  --anatomy-hi: #2a2a2a;
+  --anatomy-mid: #8a6600;
+  --anatomy-lo: #a67c00;
+  --anatomy-faint: #c99a12;
+  --anatomy-dot: #5a4300;
+}
+
+.gr .iso-line.gr-band {
+  stroke-width: 1.4px;
+}
+
+.gr-c-tire {
+  --anatomy-paper: #3c3d42;
+  --anatomy-top: #4a4b51;
+  --anatomy-shade-0: #222326;
+  --anatomy-shade-1: #2a2b2f;
+  --anatomy-shade-2: #313236;
+  --anatomy-shade-3: #38393d;
+  --anatomy-hi: #111113;
+  --anatomy-mid: #111113;
+  --anatomy-faint: #55565c;
+}
+
+.gr-c-car {
+  --anatomy-face: #d8343a;
+  --anatomy-lit-top: #ec5b5b;
+  --anatomy-lit-shade: #b8262c;
+  --anatomy-lit: #5e0f12;
+  --anatomy-mid: #7d1519;
+  --anatomy-faint: #a8252a;
+}
+
+.gr-c-glass {
+  --anatomy-paper: #a9c9e0;
+  --anatomy-top: #c7dcec;
+  --anatomy-shade-0: #5f86a6;
+  --anatomy-shade-1: #6d93b2;
+  --anatomy-shade-2: #7ea2bf;
+  --anatomy-shade-3: #90b2cc;
+  --anatomy-hi: #23384b;
+  --anatomy-mid: #3d5a74;
+  --anatomy-faint: #6d93b2;
+}
+
+.gr-light {
+  fill: #fff4b8;
+  stroke: #8a6a00;
+  stroke-width: var(--anatomy-weight);
+}
+
+.gr-light[data-rear] {
+  fill: #ff4a3d;
+  stroke: #7d1519;
+}
+
+[data-color="1"] .gr-c-car {
+  --anatomy-face: #2f6fd6;
+  --anatomy-lit-top: #5a91ea;
+  --anatomy-lit-shade: #2257b3;
+  --anatomy-lit: #0f2a5c;
+  --anatomy-mid: #163f86;
+  --anatomy-faint: #2257b3;
+}
+
+[data-color="2"] .gr-c-car {
+  --anatomy-face: #2e9e5b;
+  --anatomy-lit-top: #4fc07c;
+  --anatomy-lit-shade: #217a45;
+  --anatomy-lit: #0d3a20;
+  --anatomy-mid: #165c33;
+  --anatomy-faint: #217a45;
+}
+
+[data-color="3"] .gr-c-car {
+  --anatomy-face: #f08a24;
+  --anatomy-lit-top: #f7a856;
+  --anatomy-lit-shade: #c96d10;
+  --anatomy-lit: #5c3104;
+  --anatomy-mid: #8f4d08;
+  --anatomy-faint: #c96d10;
+}
+
+[data-color="4"] .gr-c-car {
+  --anatomy-face: #7d4ad1;
+  --anatomy-lit-top: #9d72e6;
+  --anatomy-lit-shade: #6136ad;
+  --anatomy-lit: #2a1452;
+  --anatomy-mid: #43237e;
+  --anatomy-faint: #6136ad;
+}
+
+[data-color="5"] .gr-c-car {
+  --anatomy-face: #e8e6e1;
+  --anatomy-lit-top: #fbfaf7;
+  --anatomy-lit-shade: #c4c1ba;
+  --anatomy-lit: #4a4844;
+  --anatomy-mid: #8a8780;
+  --anatomy-faint: #b0ada6;
+}
+
+.gr-sign {
+  font-family: var(--anatomy-mono);
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  fill: #3ddc6f;
+}
+
+.gr-sign[data-full="true"] {
+  fill: #ff4a3d;
+}
+
+.gr-plate {
+  padding: 22px 22px 26px;
+}
+
+.gr-head {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 14px;
+  text-align: center;
+}
+
+.gr-title {
+  margin: 0;
+  color: var(--anatomy-strong);
+  font-size: clamp(26px, 5vw, 38px);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+}
+
+.gr-sub {
+  margin: 0;
+  color: var(--anatomy-strong);
+  font-size: clamp(15px, 2.6vw, 18px);
+  font-weight: 600;
+}
+
+.gr-key {
+  display: inline-block;
+  min-width: 1.6em;
+  margin: 0 0.15em;
+  padding: 0.1em 0.5em;
+  border: 1px solid var(--anatomy-mid);
+  border-bottom-width: 3px;
+  border-radius: 6px;
+  background: var(--anatomy-top);
+  color: var(--anatomy-strong);
+  font-family: var(--anatomy-mono);
+  font-size: 0.95em;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.gr-key:first-child {
+  border-color: #c62828;
+  background: #ffe9e6;
+  color: #b71c1c;
+}
+
+.gr-sep {
+  margin: 0 0.6em;
+  color: var(--anatomy-muted);
+}
+
+.gr-status {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 6px 14px;
+  margin: 0;
+  font-family: var(--anatomy-mono);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+.gr-status > span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.gr-event {
+  flex: 0 0 calc(21ch + 16px);
+  box-sizing: border-box;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: var(--anatomy-strong);
+  color: var(--anatomy-card);
+  font-weight: 700;
+  text-align: center;
+}
+
+.gr-readout {
+  flex: 0 1 60ch;
+  max-width: 100%;
+  color: var(--anatomy-text);
+  text-align: left;
+}
+
+.gr-swatch {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-right: 6px;
+  border-radius: 3px;
+  vertical-align: -1px;
+}
+
+.gr-swatch[data-mark="car"] { background: #d8343a; }
+.gr-swatch[data-mark="deck"] { background: #b8c6d4; }
+.gr-swatch[data-mark="rail"] { background: #848e9a; }
+.gr-swatch[data-mark="paint"] { background: #e0a400; }
+.gr-swatch[data-mark="sign"] { background: linear-gradient(90deg, #3ddc6f 50%, #ff4a3d 50%); }
