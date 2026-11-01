@@ -1,9 +1,12 @@
 export const SLOT_COUNT = 5;
 export const SLOT_WIDTH = 46;
 export const SLOT_Y0 = -186;
-export const SLOT_X0 = -222;
+export const SLOT_X0 = -316;
 export const SLOT_X1 = -128;
-export const SLOT_CAR_X = -175;
+export const SLOT_ZONE_SPLIT = (SLOT_X0 + SLOT_X1) / 2;
+export const SLOT_CAR_X = (SLOT_ZONE_SPLIT + SLOT_X1) / 2;
+export const SLOT_ENTRY_X = (SLOT_X0 + SLOT_ZONE_SPLIT) / 2;
+export const slotEntry = (slot: number): [number, number] => [SLOT_ENTRY_X, slotCentre(slot)[1]];
 export const SLOT_HEADING = Math.PI;
 
 export const PLAN_SEED = 7;

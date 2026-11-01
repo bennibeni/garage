@@ -80,6 +80,15 @@ function DeckView({ name, deck, bind }: { name: string; deck: DeckFrame; bind: B
   );
 }
 
+function CarDetails({ car, bind }: { car: CarFrame; bind?: Bind }) {
+  return <>
+    <g className="gr-c-car">
+      {bind ? <SolidView name="car.roof" paths={car.roof} bind={bind} lit /> : <Solid paths={car.roof} lit />}
+    </g>
+    {Object.entries(car.details).map(([key, d]) => <path key={key} ref={bind?.(`car.detail.${key}`)} className={`gr-car-${key}`} d={d} />)}
+  </>;
+}
+
 function ParkedCar({ car }: { car: CarFrame }) {
   return (
     <>
@@ -96,6 +105,7 @@ function ParkedCar({ car }: { car: CarFrame }) {
       <g className="gr-c-glass">
         <Solid paths={car.cabin} tone="hi" inner={<path className="iso-line" data-tone="mid" d={car.cabinSeam} />} />
       </g>
+      <CarDetails car={car} />
       {car.lights.map(([x, y], index) => (
         <circle key={index} className="gr-light" data-rear={car.lightsLit ? undefined : ""} cx={x} cy={y} r={1.1} />
       ))}
@@ -114,15 +124,24 @@ function writeDeck(nodes: Nodes, name: string, deck: DeckFrame) {
   });
 }
 
-function write(nodes: Nodes, frame: Frame, bollards: number[]) {
+function write(nodes: Nodes, frame: Frame) {
   writeDeck(nodes, "deck1", frame.deck1);
   writeDeck(nodes, "deck2", frame.deck2);
   writeDeck(nodes, "deck3", frame.deck3);
+  writeDeck(nodes, "platform", frame.platformRails);
+  frame.arm.forEach((paths, index) => writeSolid(nodes, `arm${index}`, paths));
+  frame.exchange.forEach((paths, index) => writeSolid(nodes, `exchange${index}`, paths));
+  const brakeLight = nodes.get("platform.brake")?.firstElementChild;
+  brakeLight?.setAttribute("cx", String(frame.platformRails.bolts[0][0]));
+  brakeLight?.setAttribute("cy", String(frame.platformRails.bolts[0][1]));
+  nodes.get("platform.brake")?.setAttribute("data-locked", String(frame.brake));
   const car = frame.car;
   nodes.get("car.halo")?.setAttribute("d", car.halo);
   car.tires.forEach((paths, index) => writeSolid(nodes, `car.tire${index}`, paths));
   writeSolid(nodes, "car.body", car.body);
   writeSolid(nodes, "car.cabin", car.cabin);
+  writeSolid(nodes, "car.roof", car.roof);
+  Object.entries(car.details).forEach(([key, d]) => nodes.get(`car.detail.${key}`)?.setAttribute("d", d));
   nodes.get("car.bodySeam")?.setAttribute("d", car.bodySeam);
   nodes.get("car.cabinSeam")?.setAttribute("d", car.cabinSeam);
   nodes.get("car.hood")?.setAttribute("d", car.hood);
@@ -150,15 +169,11 @@ function write(nodes: Nodes, frame: Frame, bollards: number[]) {
   group?.setAttribute("data-color", String(frame.colore));
   group?.setAttribute("opacity", String(Math.round(frame.shown * 100) / 100));
   group?.setAttribute("visibility", frame.shown > 0.005 ? "visible" : "hidden");
-  if (frame.roof) group?.setAttribute("clip-path", `url(#${group.dataset.mask}-hatch)`);
+  if (frame.clipCar) group?.setAttribute("clip-path", `url(#${group.dataset.mask}-hatch)`);
   else group?.removeAttribute("clip-path");
   if (frame.inside) group?.setAttribute("mask", `url(#${group.dataset.mask}-${frame.carY < 60 ? "a" : "b"})`);
   else group?.removeAttribute("mask");
-  bollards.forEach((y, index) => {
-    const front = y > frame.carY;
-    nodes.get(`bollard.back${index}`)?.setAttribute("display", front ? "none" : "inline");
-    nodes.get(`bollard.front${index}`)?.setAttribute("display", front ? "inline" : "none");
-  });
+
 }
 
 export function GarageLive(props: Props) {
@@ -170,7 +185,6 @@ export function GarageLive(props: Props) {
   const clock = React.useRef({ time: REST_TIME, speed: 1, paused: false });
   const playing = React.useRef(false);
   const [forced, setForced] = React.useState(false);
-  const bollardYs = props.bollards.map((item) => item.y);
 
   const tell = React.useCallback(
     (text: string) => {
@@ -192,14 +206,14 @@ export function GarageLive(props: Props) {
     const now = clock.current;
     if (calm && !playing.current) {
       const rest = stateAt(REST_TIME);
-      write(nodes.current, frameOf(rest), bollardYs);
+      write(nodes.current, frameOf(rest));
       say(readoutOf(rest));
       tell(eventOf(rest));
       return false;
     }
     if (!now.paused) now.time = (now.time + dt * now.speed * PLAYBACK) % CYCLE;
     const state = stateAt(now.time);
-    write(nodes.current, frameOf(state), bollardYs);
+    write(nodes.current, frameOf(state));
     const pace = now.speed === 1 ? "" : ` · ×${String(now.speed).replace(".", ",")}`;
     say(readoutOf(state) + pace + (now.paused ? " · in pausa" : ""));
     tell(eventOf(state));
@@ -224,7 +238,6 @@ export function GarageLive(props: Props) {
   };
 
   const mask = `${id}-wall`;
-  const initialFront = (y: number) => y > REST.carY;
 
   return (
     <div
@@ -271,6 +284,19 @@ export function GarageLive(props: Props) {
         </text>
         {props.roof}
         {props.stalls}
+        <g className="gr-c-yellow" aria-label="Carrello su guida con piattaforma di trasferimento">
+          {REST.arm.map((paths, index) => (
+            <SolidView key={index} name={`arm${index}`} paths={paths} bind={bind} tone="hi" />
+          ))}
+        </g>
+        <DeckView name="platform" deck={REST.platformRails} bind={bind} />
+        <g className="gr-c-rail" aria-label="Raccordi retrattili e fermi di sicurezza">
+          {REST.exchange.map((paths, index) => <SolidView key={index} name={`exchange${index}`} paths={paths} bind={bind} tone="hi" />)}
+        </g>
+        <g ref={bind("platform.brake")} data-locked={String(REST.brake)} className="gr-platform-brake">
+          <circle cx={REST.platformRails.bolts[0][0]} cy={REST.platformRails.bolts[0][1]} r={1.2} />
+        </g>
+        {/* Parked cars must occlude the transfer platform behind them. */}
         {PARKED.map((car, index) => (
           <g
             key={`slot${index}`}
@@ -292,7 +318,7 @@ export function GarageLive(props: Props) {
         <DeckView name="deck2" deck={REST.deck2} bind={bind} />
         {props.hubs}
         {props.bollards.map((item, index) => (
-          <g key={`b${index}`} ref={bind(`bollard.back${index}`)} display={initialFront(item.y) ? "none" : "inline"}>
+          <g key={`b${index}`}>
             {item.element}
           </g>
         ))}
@@ -304,7 +330,7 @@ export function GarageLive(props: Props) {
           opacity={REST.shown}
           visibility={REST.shown > 0.005 ? "visible" : "hidden"}
           mask={REST.inside ? `url(#${mask}-${REST.carY < 60 ? "a" : "b"})` : undefined}
-          clipPath={REST.roof ? `url(#${mask}-hatch)` : undefined}
+          clipPath={REST.clipCar ? `url(#${mask}-hatch)` : undefined}
         >
           <path ref={bind("car.halo")} className="iso-halo" d={REST.car.halo} />
           <g className="gr-c-tire">
@@ -321,15 +347,11 @@ export function GarageLive(props: Props) {
             <SolidView name="car.cabin" paths={REST.car.cabin} bind={bind} tone="hi" />
             <path ref={bind("car.cabinSeam")} className="iso-line" data-tone="mid" d={REST.car.cabinSeam} />
           </g>
+          <CarDetails car={REST.car} bind={bind} />
           {REST.car.lights.map(([x, y], index) => (
             <circle key={index} ref={bind(`car.light${index}`)} className="gr-light" data-rear={REST.car.lightsLit ? undefined : ""} cx={x} cy={y} r={1.1} />
           ))}
         </g>
-        {props.bollards.map((item, index) => (
-          <g key={`f${index}`} ref={bind(`bollard.front${index}`)} display={initialFront(item.y) ? "inline" : "none"}>
-            {item.element}
-          </g>
-        ))}
         {props.motors}
       </IsoFigure>
     </div>

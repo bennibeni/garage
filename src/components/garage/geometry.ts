@@ -1,6 +1,7 @@
 import {
   corners,
   cylinder,
+  extrude,
   haloOf,
   insetPlan,
   knurl,
@@ -17,7 +18,7 @@ import {
   type Point3,
 } from "../iso/iso-kit";
 import { LIFT, ROOF_R, ROOF_Z, T1, T2, TABLE_R, TRACK, WALL_X } from "./model";
-import { SLOT_COUNT, SLOT_WIDTH, SLOT_X0, SLOT_X1, SLOT_Y0, slotCentre } from "./parking";
+import { SLOT_COUNT, SLOT_WIDTH, SLOT_X0, SLOT_X1, SLOT_Y0, SLOT_ZONE_SPLIT, slotCentre } from "./parking";
 import {
   DECK_Z,
   DOOR_H,
@@ -72,7 +73,7 @@ export const WALL_ART = {
   plinth: PIERS.map(([y0, y1]) => slab(box(WALL_X, WALL_X + 1.6, y0, y1), 0, 5, 2)),
   frames: DOORS.map((y) => slab(box(WALL_X, WALL_X + 1.6, y - DOOR_HALF - 3, y + DOOR_HALF + 3), DOOR_H, DOOR_H + 3, 2)),
   rules: PIERS.map(([y0, y1]) => [24, 47].map((z) => sideSeam(box(WX0, WALL_X, y0, y1), z, P, 2)).join("")),
-  roofRules: join([-150, -170, -190].map((x) => lineOnTop([x, WALL_Y0 - 1.5], [x, WALL_Y1 + 1.5], WALL_H + 3, P))),
+  roofRules: join([-150, -170, -190, -250, -280, -310].map((x) => lineOnTop([x, WALL_Y0 - 1.5], [x, WALL_Y1 + 1.5], WALL_H + 3, P))),
 };
 
 const railPlans = (cx: number | null, cy: number | null): Plan[] => {
@@ -190,6 +191,13 @@ const SLOT_Y1 = SLOT_Y0 + SLOT_COUNT * SLOT_WIDTH;
 const CURB: Plan = { x: SLOT_X0 - 3, y: SLOT_Y0, w: 3, d: SLOT_Y1 - SLOT_Y0, r: 0.8 };
 
 export const STALL_ART = {
+  transit: onTop([[SLOT_X0, SLOT_Y0], [SLOT_ZONE_SPLIT, SLOT_Y0], [SLOT_ZONE_SPLIT, SLOT_Y1], [SLOT_X0, SLOT_Y1]], ROOF_Z + 0.05, P, true),
+  parking: onTop([[SLOT_ZONE_SPLIT, SLOT_Y0], [SLOT_X1, SLOT_Y0], [SLOT_X1, SLOT_Y1], [SLOT_ZONE_SPLIT, SLOT_Y1]], ROOF_Z + 0.05, P, true),
+  divider: lineOnTop([SLOT_ZONE_SPLIT, SLOT_Y0], [SLOT_ZONE_SPLIT, SLOT_Y1], ROOF_Z + 0.1, P),
+  rails: Array.from({ length: SLOT_COUNT }, (_, index) => {
+    const [, y] = slotCentre(index + 1);
+    return [-1, 1].map((side) => extrude([[SLOT_ZONE_SPLIT + 1, y + side * TRACK / 2 - RAIL_W / 2], [SLOT_X1 - 3, y + side * TRACK / 2 - RAIL_W / 2], [SLOT_X1 - 3, y + side * TRACK / 2 + RAIL_W / 2], [SLOT_ZONE_SPLIT + 1, y + side * TRACK / 2 + RAIL_W / 2]], ROOF_Z + DECK_Z, RAIL_H, P, { convex: true }));
+  }).flat(),
   curb: slab(CURB, ROOF_Z, ROOF_Z + 1.6, 2, 0.3),
   lines: join(
     Array.from({ length: SLOT_COUNT + 1 }, (_, index) => SLOT_Y0 + index * SLOT_WIDTH).map((y) => lineOnTop([SLOT_X0, y], [SLOT_X1, y], ROOF_Z, P)),

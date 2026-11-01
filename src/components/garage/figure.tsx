@@ -1,4 +1,5 @@
 import { GarageArt } from "./art";
+import { GarageThree } from "./three-live";
 import { ACCEL, REST_TIME, ROOF_Z, TABLE_R, TURN_TIME, UNIT_M, V_MAX, eventOf, readoutOf, stateAt } from "./model";
 import { SLOT_COUNT } from "./parking";
 import "./garage.css";
@@ -8,9 +9,12 @@ const REST = stateAt(REST_TIME);
 
 const KEYS = [
   { mark: "car", label: "Le auto, ognuna con il suo colore" },
-  { mark: "deck", label: "Piattaforme girevoli (due a terra, una sul tetto): ognuna ruota di 90° a destra" },
+  { mark: "deck", label: "Due piattaforme girevoli a terra; piattaforma elevatrice sul tetto" },
   { mark: "rail", label: "Doppio binario d'ingresso e d'uscita" },
   { mark: "paint", label: "Posti auto sul tetto, numerati" },
+  { mark: "transit", label: "Zona di transito: carrello su guida con piattaforma di trasferimento" },
+  { mark: "parking", label: "Zona di parcheggio vicino ai numeri: accesso autonomo sui binari" },
+  { mark: "safety", label: "Piattaforma: verde = freno inserito, ambra = trasferimento" },
   { mark: "sign", label: "Display: posti liberi in verde, «completo» in rosso" },
 ];
 
@@ -35,7 +39,7 @@ export function GarageFigure() {
             </span>
           </p>
         </header>
-        <GarageArt />
+        <GarageThree fallback={<GarageArt />} />
       </div>
       <figcaption className="iso-legend">
         <span className="iso-keys">

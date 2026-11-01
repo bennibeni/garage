@@ -1,5 +1,5 @@
 import * as React from "react";
-import { pathOf, type Flat, type KeyMark, type LegendKey, type LineTone, type SolidPaths, type Tone } from "../iso-kit";
+import { type Flat, type LineTone, type SolidPaths, type Tone } from "../iso-kit";
 import { Stage } from "./live";
 
 interface SolidProps {
@@ -55,29 +55,7 @@ export function Line({ d, tone = "lo", dotted = false, dashed = false, flow = fa
   );
 }
 
-interface WireProps {
-  from: Flat;
-  to: Flat;
-  via?: Flat[];
-  tone?: LineTone;
-  dotted?: boolean;
-  dashed?: boolean;
-  flow?: boolean;
-  ends?: "both" | "from" | "to" | "none";
-  size?: number;
-}
-
 const tenth = (value: number) => Math.round(value * 10) / 10;
-
-export function Wire({ from, to, via = [], tone = "lo", dotted = false, dashed = false, flow = false, ends = "both", size = 1.2 }: WireProps) {
-  return (
-    <g className="iso-wire" data-tone={tone}>
-      <Line d={pathOf([from, ...via, to])} tone={tone} dotted={dotted} dashed={dashed} flow={flow} />
-      {ends === "both" || ends === "from" ? <circle className="iso-wire-end" cx={tenth(from[0])} cy={tenth(from[1])} r={size} /> : null}
-      {ends === "both" || ends === "to" ? <circle className="iso-wire-end" cx={tenth(to[0])} cy={tenth(to[1])} r={size} /> : null}
-    </g>
-  );
-}
 
 export function Dots({ points, size = 0.5, tone = "mid", pulse = false }: { points: Array<Flat | [number, number, number]>; size?: number; tone?: Tone; pulse?: boolean }) {
   return (
@@ -132,74 +110,5 @@ export function IsoFigure({ width, height, label, className, children }: IsoFigu
         {children}
       </svg>
     </Stage>
-  );
-}
-
-function Swatch({ mark }: { mark: KeyMark }) {
-  if (mark === "raised" || mark === "flat" || mark === "lit") {
-    return (
-      <svg className="iso-swatch" data-mark={mark} viewBox="0 0 16 10" aria-hidden="true" focusable="false">
-        <path d={mark === "flat" ? "M2 6.5 8 3.5 14 6.5 8 9.5Z" : "M2 4.5 8 1.5 14 4.5 14 6 8 9 2 6Z"} />
-        {mark === "flat" ? null : <path className="iso-swatch-crease" d="M2 4.5 8 7.5 14 4.5" />}
-      </svg>
-    );
-  }
-  return (
-    <svg className="iso-swatch" data-mark={mark} viewBox="0 0 16 10" aria-hidden="true" focusable="false">
-      <path d="M1.5 5h13" />
-    </svg>
-  );
-}
-
-interface PlateProps {
-  fig: string;
-  title?: string;
-  hint?: React.ReactNode;
-  readout?: React.ReactNode;
-  keys?: LegendKey[];
-  caption?: React.ReactNode;
-  children: React.ReactNode;
-}
-
-export function Plate({ fig, title, hint, readout, keys = [], caption, children }: PlateProps) {
-  return (
-    <figure className="iso-figure">
-      <div className="iso-plate">
-        <div className="iso-plate-corners" aria-hidden="true">
-          <span className="iso-plate-corner" data-corner="fig">
-            {fig}
-          </span>
-          {title ? (
-            <span className="iso-plate-corner" data-corner="title">
-              {title}
-            </span>
-          ) : null}
-          {hint ? (
-            <span className="iso-plate-corner" data-corner="hint">
-              {hint}
-            </span>
-          ) : null}
-          <span className="iso-plate-corner" data-corner="readout" data-readout="">
-            {readout}
-          </span>
-        </div>
-        {children}
-      </div>
-      {keys.length || caption ? (
-        <figcaption className="iso-legend">
-          {keys.length ? (
-            <span className="iso-keys">
-              {keys.map((key) => (
-                <span className="iso-key" key={key.label}>
-                  <Swatch mark={key.mark} />
-                  {key.label}
-                </span>
-              ))}
-            </span>
-          ) : null}
-          {caption ? <span className="iso-caption">{caption}</span> : null}
-        </figcaption>
-      ) : null}
-    </figure>
   );
 }

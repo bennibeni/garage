@@ -319,3 +319,26 @@
 .gr-swatch[data-mark="rail"] { background: #848e9a; }
 .gr-swatch[data-mark="paint"] { background: #e0a400; }
 .gr-swatch[data-mark="sign"] { background: linear-gradient(90deg, #3ddc6f 50%, #ff4a3d 50%); }
+
+
+.gr-zone-transit { fill: #509dcc; fill-opacity: 0.22; }
+.gr-zone-parking { fill: #65b878; fill-opacity: 0.2; }
+.gr .gr-zone-divider { stroke: #436b80; stroke-dasharray: 4 3; }
+.gr-swatch[data-mark="transit"] { background: #509dcc; }
+.gr-swatch[data-mark="parking"] { background: #65b878; }
+
+.gr-platform-brake { fill: #e6a120; }
+.gr-platform-brake[data-locked="true"] { fill: #27834b; }
+
+.gr-swatch[data-mark="safety"] { background: linear-gradient(90deg, #27834b 50%, #e6a120 50%); }
+
+
+.gr-car-windows { fill: #345e79; stroke: #23384b; stroke-width: 0.45px; stroke-linejoin: round; }
+.gr-car-reflections { fill: none; stroke: #badbeb; stroke-width: 0.65px; opacity: 0.65; }
+.gr-car-wheels { fill: #292c32; stroke: #17191d; stroke-width: 0.5px; }
+.gr-car-rims { fill: #b6bfca; stroke: #626e7c; stroke-width: 0.45px; }
+.gr-car-trim { fill: none; stroke: #36404b; stroke-width: 0.65px; stroke-linecap: round; stroke-linejoin: round; }
+
+.gr-three-canvas { width: 100%; aspect-ratio: 640 / 400; }
+.gr-three-canvas canvas { width: 100%; height: 100%; display: block; }
+.gr-three-status { text-align: center; color: #59615b; font-size: 12px; margin: 8px 0; }

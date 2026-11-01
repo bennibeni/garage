@@ -1,4 +1,3 @@
-import * as React from "react";
 import { Dots, FaceText, Line, Solid } from "../iso/react/draw";
 import { BOLLARD_ART, FLOOR_ART, MOTOR_ART, RAIL_ART, ROOF_ART, SIGN_ART, STALL_ART, TABLE_ART, WALL_ART } from "./geometry";
 import { GarageLive } from "./live";
@@ -68,8 +67,14 @@ const ROOF = (
 
 const STALLS = (
   <g key="stalls" className="gr-c-building">
+    <path className="gr-zone-transit" d={STALL_ART.transit} />
+    <path className="gr-zone-parking" d={STALL_ART.parking} />
+    <Line d={STALL_ART.divider} className="gr-zone-divider" tone="mid" />
     <Line d={STALL_ART.lines} tone="lo" className="gr-paint" />
     <Solid paths={STALL_ART.curb} tone="mid" crease="faint" />
+    <g className="gr-c-rail">
+      {STALL_ART.rails.map((paths, index) => <Solid key={`rail${index}`} paths={paths} tone="mid" crease="none" />)}
+    </g>
     {STALL_ART.numbers.map((item) => (
       <FaceText key={item.label} transform={item.transform} size={9} tone="hi" anchor="middle">
         {item.label}
@@ -78,7 +83,8 @@ const STALLS = (
   </g>
 );
 
-const FRONT_FILLS = [...WALL_ART.plinth, ...WALL_ART.frames, WALL_ART.coping].map((paths) => paths.fill);
+// Low door plinths stay behind passing cars; only the walls and lintels mask them.
+const FRONT_FILLS = [...WALL_ART.frames, WALL_ART.coping].map((paths) => paths.fill);
 const MASK_A = [WALL_ART.piers[1], WALL_ART.piers[2], WALL_ART.lintels[0], WALL_ART.lintels[1]].map((paths) => paths.fill).concat(FRONT_FILLS);
 const MASK_B = [WALL_ART.piers[2], WALL_ART.lintels[1]].map((paths) => paths.fill).concat(FRONT_FILLS);
 

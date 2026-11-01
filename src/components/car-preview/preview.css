@@ -1,0 +1,92 @@
+.car-preview {
+  margin-top: 2rem;
+  border: 1px solid #d5d5ce;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #eeeee8;
+  text-align: center;
+}
+.car-preview-heading {
+  padding: 1.5rem 1rem 0;
+}
+.car-preview-heading h2 {
+  margin: 0.3rem 0 0.6rem;
+  font-size: clamp(24px, 4vw, 32px);
+}
+.car-preview-heading p {
+  color: #555b5c;
+}
+.car-preview-eyebrow {
+  margin: 0;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+.car-preview-canvas {
+  height: clamp(260px, 38vw, 400px);
+  width: 100%;
+  touch-action: none;
+}
+.car-preview-canvas canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.car-preview-status {
+  padding: 0 1rem;
+  color: #515957;
+  font-size: 13px;
+  min-height: 2em;
+}
+.car-preview-controls {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem 1rem;
+}
+.car-preview-controls button {
+  border: 1px solid #a4aaa5;
+  border-radius: 50%;
+  min-width: 36px;
+  height: 36px;
+  cursor: pointer;
+  font-size: 18px;
+  background: #fcfcf9;
+}
+.car-preview-controls .car-preview-colour {
+  min-width: 28px;
+  width: 28px;
+  height: 28px;
+}
+.car-preview-controls button:focus-visible {
+  outline: 3px solid #316d8e;
+  outline-offset: 4px;
+}
+.car-preview-colour[aria-pressed="true"] {
+  outline: 2px solid #323e41;
+  outline-offset: 3px;
+}
+.car-preview-source {
+  font-size: 12px;
+  color: #59615b;
+  padding: 0 1rem 1rem;
+}
+.car-preview-source a {
+  color: #375c6b;
+  text-underline-offset: 3px;
+}
+
+.car-preview-model {
+  display: block;
+  margin: 1rem;
+  color: #394f59;
+}
+.car-preview-model select {
+  font: inherit;
+  padding: 6px 12px;
+  border: 1px solid #9ba3a5;
+  border-radius: 6px;
+  background: #fcfcf9;
+  color: #394f59;
+}
